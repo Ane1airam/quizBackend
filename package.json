@@ -1,0 +1,25 @@
+{
+  "name": "quizbackend",
+  "version": "1.0.0",
+  "description": "Backend for the quiz game mobile app and web diplay",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ane1airam/quizBackend.git"
+  },
+  "author": "Marialena Livathinopoulou",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ane1airam/quizBackend/issues"
+  },
+  "homepage": "https://github.com/Ane1airam/quizBackend#readme",
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "lodash": "^4.17.21"
+  }
+}
