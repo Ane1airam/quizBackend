@@ -1,10 +1,18 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require('cors')
 const Game = require("./models/games");
 
 // express app
 const app = express();
+const port = process.env.PORT || 5000;
+
+// middlewares
+app.use(cors({origin: 'localhost/3000'}));
+app.use(express.json())
+// getting access to data coming from client form
+app.use(express.urlencoded({ extended: true }));
 
 // connecting to DB
 mongoose
@@ -12,15 +20,14 @@ mongoose
   .then((result) => {
     console.log("connected to db");
     // lsiten for requests
-    app.listen(3000);
+    app.listen(port);
   })
   .catch((error) => {
     console.log(error);
   });
 
-app.set("view engine", "ejs");
-// getting access to data coming from client form
-app.use(express.urlencoded({ extended: true }));
+app.use("/api", require('./routes/routes'))
+
 
 // Adding sandbox data in db
 app.get("/add-game", (req, res) => {
@@ -69,6 +76,6 @@ app.post("/", (req, res) => {
 // });
 
 // 404 page
-app.use((req, res) => {
-  res.status(404).sendFile("./views/404.html", { root: __dirname });
-});
+// app.use((req, res) => {
+//   res.status(404).sendFile("./views/404.html", { root: __dirname });
+// });
