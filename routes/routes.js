@@ -8,5 +8,6 @@ router.get('/backend', (req,res)=>{
 })
 router.get('/get-games', api.fetchGames)
 router.get('/:id', api.fetchGameByID);
+router.get('/game-code/:game_code', api.fetchGamesByCode)
 
 module.exports = router;
