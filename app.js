@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require('cors')
+const cors = require("cors");
 const Game = require("./models/games");
 
 // express app
@@ -10,12 +10,12 @@ const port = process.env.PORT || 5000;
 
 // middlewares
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000'); // Replace with your client's URL
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // Replace with your client's URL
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
   next();
 });
-app.use(express.json())
+app.use(express.json());
 // getting access to data coming from client form
 app.use(express.urlencoded({ extended: true }));
 
@@ -25,21 +25,30 @@ mongoose
   .then((result) => {
     console.log("connected to db");
     // lsiten for requests
-    app.listen(port, ()=>{ console.log(`Server is running on port ${port}`)});
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    });
   })
   .catch((error) => {
     console.log(error);
   });
 
-app.use("/api", require('./routes/routes'))
-
+app.use("/api", require("./routes/routes"));
 
 // Adding sandbox data in db
 app.get("/add-game", (req, res) => {
   const game = new Game({
-    title: "Test Game 3",
-    questions: "Does the connection work?",
-    share_code: "123C",
+    title: "Game Title",
+    question: {
+      title: "Does the connection work?",
+      options: [
+        { id: 1, value: "Option 1" },
+        { id: 2, value: "Option 2" },
+        { id: 3, value: "Option 3" },
+      ],
+      correct_answer: 1
+    },
+    share_code: "123A",
   });
 
   game
