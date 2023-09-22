@@ -38,16 +38,13 @@ app.use("/api", require("./routes/routes"));
 // Adding sandbox data in db
 app.get("/add-game", (req, res) => {
   const game = new Game({
-    title: "Game Title",
-    question: {
-      title: "Does the connection work?",
-      options: [
-        { id: 1, value: "Option 1" },
-        { id: 2, value: "Option 2" },
-        { id: 3, value: "Option 3" },
+    title: "New Game Schema Test",
+    questions: [{
+          theme: "test",
+          title: "Question Title",
+          answers: [{ value: "one", correct: true }],
+        },
       ],
-      correct_answer: 1
-    },
     share_code: "123A",
   });
 
