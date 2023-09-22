@@ -36,30 +36,59 @@ module.exports = class AI {
 
     const params = {
       messages: [
-        { role: 'system', content: 'You are a quiz generator. The formatting must be deterministic so that code can read it.' },
-        { role: 'system', content: 'Format the questions like this:\n' +
-          '[<the question>]\n' +
-          '{<correct answer>}\n' +
-          '{<incorrect answer 1>}\n' +
-          '{<incorrect answer 2>}' },
-        { role: 'system', content: 'Omit everything not included in the format parameters.' },
-        { role: 'system', content: prompt }
+        {
+          role: "system",
+          content:
+            "You are a quiz generator. The formatting must be deterministic so that code can read it.",
+        },
+        {
+          role: "system",
+          content:
+            "Format the questions like this:\n" +
+            "[<the question>]\n" +
+            "{<correct answer>}\n" +
+            "{<incorrect answer 1>}\n" +
+            "{<incorrect answer 2>}",
+        },
+        {
+          role: "system",
+          content: "Omit everything not included in the format parameters.",
+        },
+        { role: "system", content: prompt },
       ],
       stream: false,
       model: "gpt-3.5-turbo",
       temperature: 0.2,
-      max_tokens : 150,
+      max_tokens: 150,
     };
 
     try {
       const response = await client.post(apiUrl, params);
       const gameData = response.data.choices[0].message.content;
-      const parsedQuestions = answerParser(gameData)
-      saveQuiz(parsedQuestions);
+      const parsedQuestions = answerParser(gameData);
+      console.log("the return value is : ", parsedQuestions);
+      saveQuiz(answerParser(gameData));
       res.status(200).json(response.data.choices[0].message.content);
     } catch (error) {
       console.error("Error fetching data from backend:", error);
       return { error: "Error fetching data from backend" };
     }
+
+    // try {
+    //   const response = await client.post(apiUrl, params);
+    //   const gameData = response.data.choices[0].message.content;
+
+    //   if (gameData) {
+    //     const parsedQuestions = answerParser(gameData);
+    //     saveQuiz(parsedQuestions);
+    //     res.status(200).json(gameData);
+    //   } else {
+    //     console.error("No valid gameData received from the backend.");
+    //     res.status(500).json({ error: "No valid gameData received from the backend." });
+    //   }
+    // } catch (error) {
+    //   console.error("Error fetching data from backend:", error);
+    //   res.status(500).json({ error: "Error fetching data from backend" });
+    // }
   }
 };
