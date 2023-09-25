@@ -59,36 +59,17 @@ module.exports = class AI {
       stream: false,
       model: "gpt-3.5-turbo",
       temperature: 0.2,
-      max_tokens: 150,
     };
 
     try {
       const response = await client.post(apiUrl, params);
       const gameData = response.data.choices[0].message.content;
       const parsedQuestions = answerParser(gameData);
-      console.log("the return value is : ", parsedQuestions);
-      saveQuiz(answerParser(gameData));
+      saveQuiz(parsedQuestions, theme);
       res.status(200).json(response.data.choices[0].message.content);
     } catch (error) {
       console.error("Error fetching data from backend:", error);
       return { error: "Error fetching data from backend" };
     }
-
-    // try {
-    //   const response = await client.post(apiUrl, params);
-    //   const gameData = response.data.choices[0].message.content;
-
-    //   if (gameData) {
-    //     const parsedQuestions = answerParser(gameData);
-    //     saveQuiz(parsedQuestions);
-    //     res.status(200).json(gameData);
-    //   } else {
-    //     console.error("No valid gameData received from the backend.");
-    //     res.status(500).json({ error: "No valid gameData received from the backend." });
-    //   }
-    // } catch (error) {
-    //   console.error("Error fetching data from backend:", error);
-    //   res.status(500).json({ error: "Error fetching data from backend" });
-    // }
   }
 };

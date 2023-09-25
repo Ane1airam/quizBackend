@@ -33,60 +33,6 @@ mongoose
     console.log(error);
   });
 
-app.use("/api", require("./routes/routes"));
+app.use("/web_call", require("./routes/webroutes"))
+app.use("/mobile_call", require("./routes/mobileroutes"))
 
-// Adding sandbox data in db
-app.get("/add-game", (req, res) => {
-  const game = new Game({
-    title: "New Game Schema Test",
-    questions: [{
-          theme: "test",
-          title: "Question Title",
-          answers: [{ value: "one", correct: true }],
-        },
-      ],
-    share_code: "123A",
-  });
-
-  game
-    .save()
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-app.get("/get-games", (req, res) => {
-  Game.find()
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-app.post("/", (req, res) => {
-  console.log(req.body);
-});
-// app.get("/", (req, res) => {
-//   // res.send('<p>home page</p>');
-//   res.sendFile("./views/index.html", { root: __dirname });
-// });
-
-// app.get("/about", (req, res) => {
-//   // res.send('<p>about page</p>');
-//   res.sendFile("./views/about.html", { root: __dirname });
-// });
-
-// // redirecst
-// app.get("/about-us", (req, res) => {
-//   res.redirect("/about");
-// });
-
-// 404 page
-// app.use((req, res) => {
-//   res.status(404).sendFile("./views/404.html", { root: __dirname });
-// });

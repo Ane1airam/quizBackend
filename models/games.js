@@ -13,12 +13,14 @@ const questionSchema = new Schema({
 
 const gamesSchema = new Schema(
   {
+    owner_id: {type: String, require: true},
     title: { type: String, require: true },
     game: {
       theme: { type: String },
       questions: [questionSchema],
     },
     share_code: { type: String, require: true },
+    active: { type: Boolean, require: true}
   },
   { timestamps: true }
 );

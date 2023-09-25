@@ -1,12 +1,16 @@
 const Game = require("../../models/games");
+const shareCodeGenerator = require("./shareCodeGenerator");
 
-function saveQuiz(quizData) {
-  console.log("quizData ", quizData);
+function saveQuiz(quizData, quizTheme) {
+  if(!quizTheme){
+    quizTheme = "General"
+  }
   const newGame = new Game({
+    owner_id: "user id goes here",
     title: "Here will go the title that the user provides for his/hers game",
     game: {
       theme:
-        "theme will be provided by the URL on the API call for getting quizzes",
+        quizTheme,
       questions: quizData.map((questionData) => ({
         title: questionData.question,
         answers: questionData.answers.map((answer, i) => ({
@@ -15,7 +19,8 @@ function saveQuiz(quizData) {
         })),
       })),
     },
-    share_code: "123A",
+    share_code: shareCodeGenerator(),
+    active: false,
   });
 
   newGame
@@ -26,6 +31,7 @@ function saveQuiz(quizData) {
     .catch((err) => {
       console.log(err);
     });
+
 }
 
 function answerValidation(i) {
