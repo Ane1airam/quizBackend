@@ -1,12 +1,16 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const { Server } = require("socket.io");
+const http = require("http")
 const cors = require("cors");
 const Game = require("./models/games");
 
 // express app
 const app = express();
 const port = process.env.PORT || 5000;
+const server = http.createServer(app)
+const io = new Server(server)
 
 // middlewares
 app.use((req, res, next) => {
@@ -33,6 +37,9 @@ mongoose
     console.log(error);
   });
 
-app.use("/web_call", require("./routes/webroutes"))
-app.use("/mobile_call", require("./routes/mobileroutes"))
+app.use("/web_call", require("./routes/webroutes"));
+app.use("/mobile_call", require("./routes/mobileroutes"));
 
+io.on('connect', (iosocket)=>{
+  console.log("Conneted : ", iosocket.id)
+})
