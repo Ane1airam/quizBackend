@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const playerSchema = new Schema({
+  name: { type: String, require: true },
+});
+
 const answerSchema = new Schema({
   value: { type: String, require: true },
   correct: { type: Boolean, require: true },
@@ -19,6 +23,7 @@ const gamesSchema = new Schema(
       theme: { type: String },
       questions: [questionSchema],
     },
+    players: [playerSchema],
     share_code: { type: String, require: true },
     active: { type: Boolean, require: true}
   },
