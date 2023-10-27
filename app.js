@@ -1,16 +1,13 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-const { Server } = require("socket.io");
-const http = require("http")
 const cors = require("cors");
 const Game = require("./models/games");
+const db = require("./db/dibconfig");
 
 // express app
 const app = express();
 const port = process.env.PORT || 5000;
-const server = http.createServer(app)
-const io = new Server(server)
 
 // middlewares
 app.use((req, res, next) => {
@@ -24,22 +21,36 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // connecting to DB
-mongoose
-  .connect(process.env.DB_CONNECTION_STRING)
-  .then((result) => {
-    console.log("connected to db");
-    // lsiten for requests
-    app.listen(port, () => {
-      console.log(`Server is running on port ${port}`);
-    });
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+// mongoose
+//   .connect(process.env.DB_CONNECTION_STRING)
+//   .then((result) => {
+//     console.log("connected to db");
+//     // lsiten for requests
+//     app.listen(port, () => {
+//       console.log(`Server is running on port ${port}`);
+//     });
+//   })
+//   .catch((error) => {
+//     console.log(error);
+//   });
 
-app.use("/web_call", require("./routes/webroutes"));
+// lsiten for requests
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
+app.get("/firestore/test", async (req, res) => {
+  try {
+    const data = await db.collection("games").get();
+    data.forEach((doc) => {
+      console.log("doc :", doc.data().test);
+    });
+  } catch (error) {
+    console.log("error : ", error);
+  }
+});
+
 app.use("/mobile_call", require("./routes/mobileroutes"));
 
-io.on('connect', (iosocket)=>{
-  console.log("Conneted : ", iosocket.id)
-})
+// working on the websocket server for the web app
+// app.use("/web_call", require("./routes/webroutes"));

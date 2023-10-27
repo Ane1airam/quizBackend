@@ -1,8 +1,9 @@
+// in use
+
 require("dotenv").config();
 const axios = require("axios");
-const Game = require("../models/games");
 const answerParser = require("./answerParser");
-const saveQuiz = require("./db_data/saveQuiz");
+const { quizSave } = require("../db/dbData/quizSave");
 
 const client = axios.create({
   headers: {
@@ -16,6 +17,8 @@ let prompt = "Create a 3 (0,1,2) choice quiz with 15 questions.\n";
 
 module.exports = class AI {
   static async createhQuizGame(req, res) {
+    const userId = req.query.userId;
+    const quizName = req.query.quizName;
     const theme = req.query.theme;
     const age = req.query.age;
     const difficulty = req.query.difficulty;
@@ -65,7 +68,7 @@ module.exports = class AI {
       const response = await client.post(apiUrl, params);
       const gameData = response.data.choices[0].message.content;
       const parsedQuestions = answerParser(gameData);
-      saveQuiz(parsedQuestions, theme);
+      quizSave(userId, parsedQuestions, quizName, theme, age, difficulty);
       res.status(200).json(response.data.choices[0].message.content);
     } catch (error) {
       console.error("Error fetching data from backend:", error);

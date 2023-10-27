@@ -1,3 +1,5 @@
+// in use
+
 function answerParser(answerData) {
   const lines = answerData.split('\n');
   const questionsAndAnswers = [];
@@ -15,7 +17,6 @@ function answerParser(answerData) {
           let answer= line.substring(line.indexOf('{')+1,line.indexOf('}')).trim();
           currentQuestion.answers.push(answer)
       }
-      console.log("current question ", currentQuestion);
     if (currentQuestion.answers.length === 3){
         questionsAndAnswers.push(currentQuestion)
         currentQuestion = null;
