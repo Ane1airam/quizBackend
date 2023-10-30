@@ -33,15 +33,12 @@ exports.quizSave = async (
     };
     // saves t eh quiz into the games collection
     const document = await db.collection("games").add(quizObject);
-
     // saves the quiz id to the users quiz collection
-    try {
-      const logTheQuizToUsers = await db.collection("users").doc(userId).add({
-        gameId: document.id,
-      });
-    } catch (error) {
-      console.log("Error in logging the quiz to the user : ", error);
-    }
+    const userRef = await db
+      .collection("users")
+      .doc(userId)
+      .collection("gameIds")
+      .add({ gameId: document.id });
   } catch (error) {
     console.log("Error saving the quiz : ", error);
   }
