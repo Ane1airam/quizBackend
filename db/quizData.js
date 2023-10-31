@@ -11,10 +11,11 @@ module.exports = class QUIZ {
         .collection("gameIds")
         .get();
 
+      const quizListData = [];
       quizList.forEach((doc) => {
-        console.log("doc.data() : ", doc.data().gameId);
+        quizListData.push(doc.data().gameId);
       });
-      res.status(200).json(quizList);
+      res.status(200).json(quizListData);
     } catch (error) {
       console.log("Error on getting the quiz list : ", error);
     }
